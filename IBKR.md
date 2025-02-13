@@ -4,6 +4,8 @@ To export the compatible CSV data, go to "Performance & Reports" > "Flex queries
 
 1. Create the query (one-time setup only)
 
+![Screenshot of IBKR, indicating where one can create a new flex query](./ibkr_create_flex_query.png)
+
 - Select "Trades"
    - Select "ISIN"
    - Select "Date/Time"
