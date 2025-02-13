@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Wertschriftenverzeichnis CSV import",
+  "version": "1.0.0",
+  "description": "Modifies the Canton of Zurich website to import transactions from CSV.",
+  "icons": {
+    "56": "icon.png"
+  },
+  "action": {
+      "default_popup": "settings.html"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "content_scripts": [
+    {
+      "js": [
+        "import.js"
+      ],
+      "matches": [
+        "https://*.zh.ch/*"
+      ]
+    }
+  ]
+}
