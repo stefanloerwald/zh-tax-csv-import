@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "fflate": "^0.8.2"
+  }
+}

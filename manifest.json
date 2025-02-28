@@ -21,5 +21,15 @@
         "https://*.zh.ch/*"
       ]
     }
-  ]
+  ],
+  "web_accessible_resources": [{
+   "matches": [
+    "<all_urls>"
+    ],
+   "resources": [
+     "import_transaction.js",
+     "node_modules/fflate/esm/browser.js",
+     "import_ibkr.js"
+     ]
+ }]
 }
