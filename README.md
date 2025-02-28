@@ -21,6 +21,7 @@ For tutorials on how to use it with a specific provider, see the [respective tut
 ## Supported brokers
 
 - [IBKR](https://www.interactivebrokers.com/en/home.php) ([Tutorial](./tutorials/IBKR.md))
+- [Morgan Stanley At Work](https://atwork.morganstanley.com/) ([Tutorial](./tutorials/Morgan%20Stanley%20At%20Work.md))
 
 ## Contributing
 

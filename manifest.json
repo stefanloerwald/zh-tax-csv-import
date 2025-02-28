@@ -29,7 +29,8 @@
    "resources": [
      "import_transaction.js",
      "node_modules/fflate/esm/browser.js",
-     "import_ibkr.js"
+     "import_ibkr.js",
+     "import_morganStanleyAtWork.js"
      ]
  }]
 }
