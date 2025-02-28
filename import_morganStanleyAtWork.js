@@ -103,7 +103,7 @@ const performImport = (files) => {
     };
     const releasesFile = files.find(f => f.name == "Releases Net Shares Report.csv")
     readerVesting.readAsText(releasesFile, "UTF-8");
-    // TODO extract sale events from "Withdrawals Report.csv"
+    // Extract sale events from "Withdrawals Report.csv"
     const readerWithdrawals = new FileReader();
     readerWithdrawals.onload = (e) => {
         resolveSales(getSaleEvents(e.target.result));
@@ -111,9 +111,7 @@ const performImport = (files) => {
     const withdrawalsFile = files.find(f => f.name == "Withdrawals Report.csv")
     readerWithdrawals.readAsText(withdrawalsFile, "UTF-8");
     Promise.all([vestingPromise, salesPromise]).then(([vestings, sales]) => {
-        console.log(sales);
         const transactions = [vestings, sales].flat();
-        console.log(transactions);
         enterTransactions(taxId, transactions);
     })
 }

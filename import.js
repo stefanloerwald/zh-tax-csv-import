@@ -14,7 +14,6 @@ const start = (ibkr, morganStanleyAtWork) => {
 
 	const addRowButton = table.querySelector('button.add-new-row-button');
 	if (!addRowButton) {
-		console.log('not on the right page, it seems: addNewRow button missing');
 		return;
 	}
 	// add a span to indicate progress
