@@ -2,7 +2,7 @@
 
 const start = (ibkr, morganStanleyAtWork) => {
 	// find the buy/sell table
-	const table = document.querySelector('zhp-securities-detail-buy-sell-table');
+	const table = document.querySelector('zhp-da1-detail-buy-sell-table');
 	if (!table) {
 		console.log('not on the right page, it seems: table missing. Import only works in the Wertschriftenverzeichnis.');
 		return;
