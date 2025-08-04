@@ -21,12 +21,12 @@ const startImport = () => {
 
 const performImport = (inputFileContent) => {
     // get ID from current url.
-    // Structure is https://zhp.services.zh.ch/app/ZHprivateTax2024/#/${TAXID}/dialogs/securities/securities-detail
+    // Structure is https://zhp.services.zh.ch/app/ZHprivateTax2024/#/${TAXID}/dialogs/securities/da1-detail
     const taxId = document.location.hash.split('/')[1];
     if (!taxId) {
         return;
     }
-    const isin = document.querySelector('input#securitiesWAISINNumber\\:Input').value.replaceAll(' ', '');
+    const isin = document.querySelector('input#da1WAISINNumber\\:Input').value.replaceAll(' ', '');
     const entries = inputFileContent.split('\n').map(line => line.split(',').map(v => v.replaceAll('"', '')))
     const matchingEntries = entries.filter(e => e[0] == isin);
     const transactions = matchingEntries.map(entry => {
@@ -38,5 +38,6 @@ const performImport = (inputFileContent) => {
     });
     enterTransactions(taxId, transactions);
 }
+
 
 export {startImport};
