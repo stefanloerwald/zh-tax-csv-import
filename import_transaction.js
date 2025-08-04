@@ -12,13 +12,13 @@ const enterTransaction = async (taxId, transaction) => {
 	headers.append("Content-Type", "application/json");
 
 	// 1. add a row (returns row index context)
-	const response = await fetch(`https://zhp.services.zh.ch/api/ZHprivateTax2024/${taxId}/view/wizard.securities/table`, {
+	const response = await fetch(`https://zhp.services.zh.ch/api/ZHprivateTax2024/${taxId}/view/wizard.da1/table`, {
 		method: "post",
 		body: JSON.stringify({
 			action: "ADD_ROW",
 			rowIndex: -1,
 			tableContext: null,
-			tableId: "securitiesWAAdditionDivestitureDetail"
+			tableId: "da1WAAdditionDivestitureDetail"
 		}),
 		headers: headers
 	});
@@ -27,34 +27,34 @@ const enterTransaction = async (taxId, transaction) => {
 	const addedRow = rows[rows.length - 1];
 	const rowContext = addedRow[0].context;
 	// Set KAUF/VERKAUF
-	const typePromise = fetch(`https://zhp.services.zh.ch/api/ZHprivateTax2024/${taxId}/view/wizard.securities/entity`, {
+	const typePromise = fetch(`https://zhp.services.zh.ch/api/ZHprivateTax2024/${taxId}/view/wizard.da1/entity`, {
 		method: "post",
 		body: JSON.stringify({
 			context: rowContext,
 			deleteImport: false,
-			id: "securitiesWAAdditionDivestitureDetailReason",
+			id: "da1WAAdditionDivestitureDetailReason",
 			value: (transaction.amount >= 0 ? "00" : "10") // transaction table contains purchases as positive values, and sales as negative values. Reason "00" is KAUF, "10" is VERKAUF.
 		}),
 		headers: headers
 	});
 	// Set amount
-	const amountPromise = fetch(`https://zhp.services.zh.ch/api/ZHprivateTax2024/${taxId}/view/wizard.securities/entity`, {
+	const amountPromise = fetch(`https://zhp.services.zh.ch/api/ZHprivateTax2024/${taxId}/view/wizard.da1/entity`, {
 		method: "post",
 		body: JSON.stringify({
 			context: rowContext,
 			deleteImport: false,
-			id: "securitiesWAAdditionDivestitureDetailFaceValueQuantity",
+			id: "da1WAAdditionDivestitureDetailFaceValueQuantity",
 			value: Math.abs(transaction.amount) // reason already handles whether it's a sale or purchase, quantity is expected to be positive.
 		}),
 		headers: headers
 	});
 	// Set date
-	const datePromise = fetch(`https://zhp.services.zh.ch/api/ZHprivateTax2024/${taxId}/view/wizard.securities/entity`, {
+	const datePromise = fetch(`https://zhp.services.zh.ch/api/ZHprivateTax2024/${taxId}/view/wizard.da1/entity`, {
 		method: "post",
 		body: JSON.stringify({
 			context: rowContext,
 			deleteImport: false,
-			id: "securitiesWAAdditionDivestitureDetailDate",
+			id: "da1WAAdditionDivestitureDetailDate",
 			value: transaction.date // assumed to be in format DD.MM.YYYY
 		}),
 		headers: headers
@@ -63,7 +63,7 @@ const enterTransaction = async (taxId, transaction) => {
 }
 
 const enterTransactions = (taxId, transactions) => {
-    const table = document.querySelector('zhp-securities-detail-buy-sell-table');
+    const table = document.querySelector('zhp-da1-detail-buy-sell-table');
     const progressSpan = table.querySelector('span#import-progress');
 
     let chain = Promise.resolve();
@@ -80,5 +80,6 @@ const enterTransactions = (taxId, transactions) => {
     }
     chain.then(() => document.location.reload());
 }
+
 
 export {enterTransactions, Transaction};
