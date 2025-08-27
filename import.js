@@ -2,11 +2,14 @@
 
 const start = (ibkr, morganStanleyAtWork) => {
 	// find the buy/sell table
-	const table = document.querySelector('zhp-securities-detail-buy-sell-table');
-	if (!table) {
-		console.log('not on the right page, it seems: table missing. Import only works in the Wertschriftenverzeichnis.');
+	const wv_table = document.querySelector('zhp-securities-detail-buy-sell-table');
+	const da1_table = document.querySelector('zhp-da1-detail-buy-sell-table');
+	if (!wv_table && !da1_table) {
+		console.log('not on the right page, it seems: table missing. Import only works in the Wertschriftenverzeichnis or DA-1.');
 		return;
 	}
+	const is_wv = !!wv_table;
+	const table = is_wv ? wv_table : da1_table;
 	// if the table already contains a import-progress span, then the stuff was already added
 	if (table.querySelector('span#import-progress')) {
 		return;
@@ -28,13 +31,13 @@ const start = (ibkr, morganStanleyAtWork) => {
 		if (items.ibkr) {
 			const importButton = addRowButton.cloneNode(true);
 			importButton.querySelector('span').textContent = 'IBKR import';
-			importButton.onclick = () => ibkr.startImport();
+			importButton.onclick = () => ibkr.startImport(is_wv);
 			addRowButton.insertAdjacentElement('afterend', importButton);
 		}
 		if (items.morganStanleyAtWork) {
 			const importButton = addRowButton.cloneNode(true);
 			importButton.querySelector('span').textContent = 'Morgan Stanley At Work import';
-			importButton.onclick = () => morganStanleyAtWork.startImport();
+			importButton.onclick = () => morganStanleyAtWork.startImport(is_wv);
 			addRowButton.insertAdjacentElement('afterend', importButton);
 		}
 	});

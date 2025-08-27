@@ -1,6 +1,6 @@
 import { enterTransactions, Transaction } from "./import_transaction.js";
 
-const startImport = () => {
+const startImport = (is_wv) => {
     let input = document.createElement("input");
     input.type = "file";
     input.setAttribute("multiple", false);
@@ -12,21 +12,21 @@ const startImport = () => {
         }
         var reader = new FileReader();
         reader.onload = (e) => {
-            performImport(e.target.result);
+            performImport(e.target.result, is_wv);
         };
         reader.readAsText(file, "UTF-8");
     };
     input.click();
 };
 
-const performImport = (inputFileContent) => {
+const performImport = (inputFileContent, is_wv) => {
     // get ID from current url.
     // Structure is https://zhp.services.zh.ch/app/ZHprivateTax2024/#/${TAXID}/dialogs/securities/securities-detail
     const taxId = document.location.hash.split('/')[1];
     if (!taxId) {
         return;
     }
-    const isin = document.querySelector('input#securitiesWAISINNumber\\:Input').value.replaceAll(' ', '');
+    const isin = document.querySelector(`input#${(is_wv ? 'securities' : 'da1')}WAISINNumber\\:Input`).value.replaceAll(' ', '');
     const entries = inputFileContent.split('\n').map(line => line.split(',').map(v => v.replaceAll('"', '')))
     const matchingEntries = entries.filter(e => e[0] == isin);
     const transactions = matchingEntries.map(entry => {
@@ -36,7 +36,7 @@ const performImport = (inputFileContent) => {
         const amount = entry[2];
         return new Transaction(amount, date);
     });
-    enterTransactions(taxId, transactions);
+    enterTransactions(taxId, transactions, is_wv);
 }
 
 export {startImport};

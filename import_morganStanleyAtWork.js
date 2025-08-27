@@ -1,7 +1,7 @@
 import { Transaction, enterTransactions } from "./import_transaction.js";
 import * as fflate from "./node_modules/fflate/esm/browser.js";
 
-const startImport = () => {
+const startImport = (is_wv) => {
     let input = document.createElement("input");
     input.type = "file";
     input.setAttribute("multiple", false);
@@ -17,7 +17,7 @@ const startImport = () => {
         const fileArray = Object.keys(unzipped)
             .filter(filename => unzipped[filename].length > 0)
             .map(filename => new File([unzipped[filename]], filename));
-        performImport(fileArray);
+        performImport(fileArray, is_wv);
     };
     input.click();
 }
@@ -85,7 +85,7 @@ const getSaleEvents = async (inputFileContent) => {
     return transactions;
 }
 
-const performImport = (files) => {
+const performImport = (files, is_wv) => {
     // get ID from current url.
     // Structure is https://zhp.services.zh.ch/app/ZHprivateTax2024/#/${TAXID}/dialogs/securities/securities-detail
     const taxId = document.location.hash.split('/')[1];
@@ -120,7 +120,7 @@ const performImport = (files) => {
     }
     Promise.all([vestingPromise, salesPromise]).then(([vestings, sales]) => {
         const transactions = [vestings, sales].flat();
-        enterTransactions(taxId, transactions);
+        enterTransactions(taxId, transactions, is_wv);
     })
 }
 
