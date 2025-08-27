@@ -16,7 +16,7 @@ This chrome extension is NOT affiliated with the canton of Zurich. **Usage is at
 ## Usage
 
 The extension adds an import button to the Wertschriftenverzeichnis page of the tax declaration.
-For tutorials on how to use it with a specific provider, see the [respective tutorial](./tutorials/)
+For tutorials on how to use it with a specific provider, see the [respective tutorial](./tutorials/).
 
 ## Supported brokers
 
@@ -32,3 +32,4 @@ I am also happy to review code for other brokers / banks. The code has some mini
 # Disclaimer
 
 This project is not affiliated with the canton of Zurich, nor with any of the supported brokers or banks. Usage is at own risk.
+The tax payer remains fully responsible for correct declarations.
