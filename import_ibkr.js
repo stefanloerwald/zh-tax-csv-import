@@ -23,6 +23,7 @@ const performImport = (inputFileContent, is_wv) => {
     // get ID from current url.
     // Structure is https://zhp.services.zh.ch/app/ZHprivateTax2024/#/${TAXID}/dialogs/securities/securities-detail
     const taxId = document.location.hash.split('/')[1];
+    const taxYear = document.location.pathname.match(/ZHprivateTax(\d{4})/)[1];
     if (!taxId) {
         return;
     }
@@ -36,7 +37,7 @@ const performImport = (inputFileContent, is_wv) => {
         const amount = entry[2];
         return new Transaction(amount, date);
     });
-    enterTransactions(taxId, transactions, is_wv);
+    enterTransactions(taxYear, taxId, transactions, is_wv);
 }
 
 export {startImport};

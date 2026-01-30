@@ -12,16 +12,19 @@ const start = (ibkr, morganStanleyAtWork) => {
 	const table = is_wv ? wv_table : da1_table;
 	// if the table already contains a import-progress span, then the stuff was already added
 	if (table.querySelector('span#import-progress')) {
+		console.log('Import button already added.');
 		return;
 	}
 
-	const addRowButton = table.querySelector('button.add-new-row-button');
+	const addRowButton = document.querySelector('button.add-new-row-button');
 	if (!addRowButton) {
+		console.log('Add row button not found, cannot add import button.');
 		return;
 	}
 	// add a span to indicate progress
 	const progressSpan = document.createElement('span');
 	progressSpan.id = 'import-progress';
+	progressSpan.textContent = 'Select file to import transactions.';
 	addRowButton.insertAdjacentElement('afterend', progressSpan);
 	chrome.storage.sync.get({
 		ibkr: true,

@@ -7,12 +7,12 @@ class Transaction {
     }
 }
 
-const enterTransaction = async (taxId, transaction, is_wv) => {
+const enterTransaction = async (taxYear, taxId, transaction, is_wv) => {
 	const headers = new Headers();
 	headers.append("Content-Type", "application/json");
 
 	// 1. add a row (returns row index context)
-	const response = await fetch(`https://zhp.services.zh.ch/api/ZHprivateTax2024/${taxId}/view/wizard.${(is_wv ? 'securities' : 'da1')}/table`, {
+	const response = await fetch(`https://zhp.services.zh.ch/api/ZHprivateTax${taxYear}/${taxId}/view/wizard.${(is_wv ? 'securities' : 'da1')}/table`, {
 		method: "post",
 		body: JSON.stringify({
 			action: "ADD_ROW",
@@ -27,7 +27,7 @@ const enterTransaction = async (taxId, transaction, is_wv) => {
 	const addedRow = rows[rows.length - 1];
 	const rowContext = addedRow[0].context;
 	// Set KAUF/VERKAUF
-	const typePromise = fetch(`https://zhp.services.zh.ch/api/ZHprivateTax2024/${taxId}/view/wizard.${(is_wv ? 'securities' : 'da1')}/entity`, {
+	const typePromise = fetch(`https://zhp.services.zh.ch/api/ZHprivateTax${taxYear}/${taxId}/view/wizard.${(is_wv ? 'securities' : 'da1')}/entity`, {
 		method: "post",
 		body: JSON.stringify({
 			context: rowContext,
@@ -38,7 +38,7 @@ const enterTransaction = async (taxId, transaction, is_wv) => {
 		headers: headers
 	});
 	// Set amount
-	const amountPromise = fetch(`https://zhp.services.zh.ch/api/ZHprivateTax2024/${taxId}/view/wizard.${(is_wv ? 'securities' : 'da1')}/entity`, {
+	const amountPromise = fetch(`https://zhp.services.zh.ch/api/ZHprivateTax${taxYear}/${taxId}/view/wizard.${(is_wv ? 'securities' : 'da1')}/entity`, {
 		method: "post",
 		body: JSON.stringify({
 			context: rowContext,
@@ -49,7 +49,7 @@ const enterTransaction = async (taxId, transaction, is_wv) => {
 		headers: headers
 	});
 	// Set date
-	const datePromise = fetch(`https://zhp.services.zh.ch/api/ZHprivateTax2024/${taxId}/view/wizard.${(is_wv ? 'securities' : 'da1')}/entity`, {
+	const datePromise = fetch(`https://zhp.services.zh.ch/api/ZHprivateTax${taxYear}/${taxId}/view/wizard.${(is_wv ? 'securities' : 'da1')}/entity`, {
 		method: "post",
 		body: JSON.stringify({
 			context: rowContext,
@@ -62,23 +62,25 @@ const enterTransaction = async (taxId, transaction, is_wv) => {
 	await Promise.all([typePromise, amountPromise, datePromise])
 }
 
-const enterTransactions = (taxId, transactions, is_wv) => {
+const enterTransactions = (taxYear, taxId, transactions, is_wv) => {
     const table = document.querySelector(`zhp-${(is_wv ? 'securities' : 'da1')}-detail-buy-sell-table`);
-    const progressSpan = table.querySelector('span#import-progress');
+    const progressSpan = document.querySelector('span#import-progress');
 
     let chain = Promise.resolve();
     let count = 0;
     for (let transaction of transactions) {
         chain = chain
             .then(() => {
-                return enterTransaction(taxId, transaction, is_wv);
+                return enterTransaction(taxYear, taxId, transaction, is_wv);
             })
             .then(() => {
                 ++count;
                 progressSpan.textContent = `Imported ${count} of ${transactions.length} transactions.`;
             });
     }
-    chain.then(() => document.location.reload());
+	if (taxYear < 2025) {
+		chain.then(() => document.location.reload());
+	}
 }
 
 export {enterTransactions, Transaction};

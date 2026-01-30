@@ -89,6 +89,7 @@ const performImport = (files, is_wv) => {
     // get ID from current url.
     // Structure is https://zhp.services.zh.ch/app/ZHprivateTax2024/#/${TAXID}/dialogs/securities/securities-detail
     const taxId = document.location.hash.split('/')[1];
+    const taxYear = document.location.pathname.match(/ZHprivateTax(\d{4})/)[1];
     if (!taxId) {
         return;
     }
@@ -120,7 +121,7 @@ const performImport = (files, is_wv) => {
     }
     Promise.all([vestingPromise, salesPromise]).then(([vestings, sales]) => {
         const transactions = [vestings, sales].flat();
-        enterTransactions(taxId, transactions, is_wv);
+        enterTransactions(taxYear, taxId, transactions, is_wv);
     })
 }
 
