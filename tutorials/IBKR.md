@@ -35,4 +35,4 @@ To export the compatible CSV data, go to "Performance & Reports" > "Flex queries
 ## Sample file
 
 See [the sample file](./IBKR%20sample.csv) to check whether your file is in the right format.
-You can test it on the [demo website](https://zhp.services.zh.ch/app/ZHprivateTax2024/#/demo/dialogs/securities/securities-detail) using ISIN US67066G1040 or US9229083632.
+You can test it on the [demo website](https://zhp.services.zh.ch/app/ZHprivateTax2025/#/demo/dialogs/securities/securities-detail) using ISIN US67066G1040 or US9229083632.
